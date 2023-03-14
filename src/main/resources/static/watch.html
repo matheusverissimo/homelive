@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Teste</title>
+</head>
+<body>
+	<h1>teste</h1>
+	<video id="video" width="400" height="300" autoplay></video>
+    <script>
+    	const video = document.getElementById('video');
+    	
+    	let ws = new WebSocket('ws://' + document.location.host + '/watch');
+    	
+    	ws.onmessage = (data) => {
+    		console.log(data)
+    	}
+    </script>
+</body>
+</html>

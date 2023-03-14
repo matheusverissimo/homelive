@@ -7,7 +7,7 @@ import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 import org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean;
 
-import com.matheusverissimo.homelive.controller.VideoHandler;
+import com.matheusverissimo.homelive.controller.UpstreamHandler;
 
 @Configuration
 @EnableWebSocket
@@ -23,7 +23,8 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-		registry.addHandler(new VideoHandler(), "/ws").setAllowedOrigins("*");
+		registry.addHandler(new UpstreamHandler(), "/ws").setAllowedOrigins("*");
+		registry.addHandler(new UpstreamHandler(), "/watch").setAllowedOrigins("*");
 	}
 
 }
