@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>HomeLive</title>
+</head>
+<body>
+    <h1>HomeLive</h1>
+    <p>Messages:</p>
+    <ul id="messages"></ul>
+	<button id="btn" type="button">Click</button>
+    <script>
+	    var webSocket = new WebSocket("ws://localhost:8080/ws");
+	
+	    webSocket.onopen = (evt) => {
+	    	console.log("opened connection")
+	    }
+	    
+	    webSocket.onmessage = function(event) {
+	        const messages = document.getElementById("messages");
+	        const li = document.createElement("li");
+	        li.appendChild(document.createTextNode(event.data));
+	        messages.appendChild(li);
+	    };
+	
+	    webSocket.onerror = function(event) {
+	        console.error("WebSocket error:", event);
+	    };
+	
+	    webSocket.onclose = function(event) {
+	        console.warn("WebSocket closed:", event);
+	    };
+	    
+	    document.getElementById("btn").addEventListener('click', (evt) => {
+	    	console.log("click!")
+	    	webSocket.send("oi")
+	    })
+	    
+    </script>
+</body>
+</html>
