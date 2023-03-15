@@ -13,7 +13,7 @@ public class UpstreamHandler extends BinaryWebSocketHandler{
 	
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-		System.out.println("Conectado!");
+		System.out.println("Emissor conectado: " + session.getRemoteAddress());
 		session.sendMessage(new TextMessage("Conectado ao upstream handler ws!"));
 	}
 	

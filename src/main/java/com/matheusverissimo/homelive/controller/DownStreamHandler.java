@@ -5,7 +5,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import org.springframework.web.socket.BinaryMessage;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.PongMessage;
-import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.BinaryWebSocketHandler;
 
@@ -15,6 +14,7 @@ public class DownStreamHandler extends BinaryWebSocketHandler {
 	
 	@Override
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+		System.out.println("Receptor conectado: " + session.getRemoteAddress());
 		DownStreamHandler.sessionList.add(session);
 	}
 	
