@@ -2,30 +2,25 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>HomeLive</title>
+    <title>Upstream</title>
 </head>
 <body>
-    <h1>HomeLive</h1>
- 	<video id="video" width="400" height="300" autoplay></video>
+    <h1>Upstream</h1>
     <script>
-    	const video = document.getElementById('video');
-    	
     	let dataType = {audio: true}
-    	/*if(document.location.hostname == "localhost")
-    		dataType = {audio: true}
-    	else
-    		dataType = {video: true}
-    	*/
+    	
     	navigator.mediaDevices.getUserMedia(dataType)
         .then((stream) => {
-          video.srcObject = stream;
           const ws = new WebSocket('ws://' + document.location.host + '/ws');
+          
+          ws.onmessage = (msg) => {
+      	  	console.log(msg.data)
+      	  }
+          
           const mediaRecorder = new MediaRecorder(stream);
           mediaRecorder.ondataavailable = function(e) {
-		      console.log("dentro do dataavailable")
         	  if(ws.readyState == ws.OPEN){
 	        	  ws.send(e.data);
-	        	  console.log("enviei")
         	  }
           }
           mediaRecorder.start(1000);

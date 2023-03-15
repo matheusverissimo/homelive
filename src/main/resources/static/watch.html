@@ -2,19 +2,40 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Teste</title>
+<title>Downstream</title>
 </head>
 <body>
-	<h1>teste</h1>
-	<video id="video" width="400" height="300" autoplay></video>
+	<h1>Downstream</h1>
+	<button id="btn">Click</button>
     <script>
-    	const video = document.getElementById('video');
-    	
-    	let ws = new WebSocket('ws://' + document.location.host + '/watch');
-    	
-    	ws.onmessage = (data) => {
-    		console.log(data)
-    	}
+		document.getElementById('btn').addEventListener('click', () => {
+			const socket = new WebSocket('ws://' + document.location.host + '/watch');
+			socket.binaryType = "arraybuffer";
+			// Step 2: Create an AudioContext object
+			const audioContext = new AudioContext();
+
+			// Step 3: Create a WebSocket object
+			socket.addEventListener('open', function(event) {
+			  console.log('WebSocket connected');
+			});
+
+			socket.addEventListener('message', function(event) {
+			  // Step 4: Convert the audio data to an AudioBuffer
+			  console.log(event.data)
+			  audioContext.decodeAudioData(event.data, function(buffer) {
+			    // Step 5: Create an AudioBufferSourceNode object
+			    const source = audioContext.createBufferSource();
+			    source.buffer = buffer;
+			    source.connect(audioContext.destination);
+
+			    // Step 6: Connect the AudioBufferSourceNode object to the AudioContext object
+			    source.connect(audioContext.destination);
+
+			    // Step 7: Start playing the audio
+			    source.start();
+			  });  
+			})
+		})
     </script>
 </body>
 </html>

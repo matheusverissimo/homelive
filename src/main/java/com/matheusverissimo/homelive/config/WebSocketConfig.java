@@ -7,6 +7,7 @@ import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 import org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean;
 
+import com.matheusverissimo.homelive.controller.DownStreamHandler;
 import com.matheusverissimo.homelive.controller.UpstreamHandler;
 
 @Configuration
@@ -17,14 +18,14 @@ public class WebSocketConfig implements WebSocketConfigurer {
     public ServletServerContainerFactoryBean createWebSocketContainer() {
         ServletServerContainerFactoryBean container = new ServletServerContainerFactoryBean();
         container.setMaxTextMessageBufferSize(8192);
-        container.setMaxBinaryMessageBufferSize(8192);
+        container.setMaxBinaryMessageBufferSize(8192 * 8);
         return container;
     }
 
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 		registry.addHandler(new UpstreamHandler(), "/ws").setAllowedOrigins("*");
-		registry.addHandler(new UpstreamHandler(), "/watch").setAllowedOrigins("*");
+		registry.addHandler(new DownStreamHandler(), "/watch").setAllowedOrigins("*");
 	}
 
 }
