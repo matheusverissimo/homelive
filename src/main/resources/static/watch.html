@@ -21,7 +21,6 @@
 
 			socket.addEventListener('message', function(event) {
 			  // Step 4: Convert the audio data to an AudioBuffer
-			  console.log(event.data)
 			  audioContext.decodeAudioData(event.data, function(buffer) {
 			    // Step 5: Create an AudioBufferSourceNode object
 			    const source = audioContext.createBufferSource();
@@ -33,7 +32,7 @@
 
 			    // Step 7: Start playing the audio
 			    source.start();
-			  });  
+			  }  
 			})
 		})
     </script>
