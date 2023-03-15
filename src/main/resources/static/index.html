@@ -7,32 +7,26 @@
 <body>
     <h1>Upstream</h1>
     <script>
+    	const ws = new WebSocket('ws://' + document.location.host + '/ws');
     	let dataType = {audio: true}
-    	
     	navigator.mediaDevices.getUserMedia(dataType)
         .then((stream) => {
-          const ws = new WebSocket('ws://' + document.location.host + '/ws');
-          
-          ws.onmessage = (msg) => {
-      	  	console.log(msg.data)
-      	  }
-          
-          const options = {
-        	      mimeType: "audio/mp3",
-        	    };
-          
-          const mediaRecorder = new MediaRecorder(stream,);
-          mediaRecorder.ondataavailable = function(e) {
-        	  console.log(e)
-        	  if(ws.readyState == ws.OPEN){
-	        	  ws.send(e.data);
-        	  }
-          }
-          mediaRecorder.start(1000);
+        	setInterval(function() {
+                var chunks = [];
+                var recorder = new MediaRecorder(stream);
+                recorder.ondataavailable = function(e) {
+                    chunks.push(e.data);
+                };
+                recorder.onstop = function(e) {
+                	ws.send(new Blob(chunks, {type:"audio/ogg; codecs=opus"}))
+              	    chunks = []
+                }
+                recorder.start();
+                setTimeout(function() {
+                    recorder.stop();
+                }, 1050);
+            }, 1000);
         })
-        .catch((error) => {
-          console.error(error);
-        });
     </script>
 </body>
 </html>

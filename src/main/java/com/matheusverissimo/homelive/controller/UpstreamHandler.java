@@ -27,7 +27,6 @@ public class UpstreamHandler extends BinaryWebSocketHandler{
 	
 	@Override
 	protected void handleBinaryMessage(WebSocketSession session, BinaryMessage message) throws Exception {
-		System.out.println("Data received!");
 		DownStreamHandler.sessionList.parallelStream().forEach(s -> {
 			try {
 				s.sendMessage(new BinaryMessage(message.getPayload()));
